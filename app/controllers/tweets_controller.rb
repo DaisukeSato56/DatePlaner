@@ -18,6 +18,11 @@ class TweetsController < ApplicationController
     redirect_to root_path
   end
 
+  def submit
+    message = { input: params[:input]}
+    render json: message
+  end
+
   private
     def set_data
       @tweet = Tweet.find(params[:id])

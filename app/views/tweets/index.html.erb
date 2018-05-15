@@ -8,20 +8,37 @@
   <% end %>
   <div class="divider last"></div>
 
-  <%= form_for @tweet do |f| %>
+  <%= form_for @tweet, html: {id: 'item_form'} do |f| %>
     <div class="row">
       <div class="col s12">
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix">textsms</i>
-            <%= f.text_field :body, id: "autocomplete-input", class: "autocomplete", placeholder: "メッセージを入力してください" %>
+            <%= f.text_field :body, id: "autocomplete-input", class: "autocomplete, message", placeholder: "メッセージを入力してください" %>
             <% f.label "Autocomplete", for: "autocomplete-input" %>
           </div>
         </div>
       </div>
     </div>
 
-    <%= f.submit "Submit", class: "btn waves-effect waves-light", name: "action" %>
+    <%= f.submit "Submit", class: "btn waves-effect waves-light", id: "message_submit", name: "action" %>
 
   <% end %>
 </div>
+
+<script type="text/javascript">
+  $(function() {
+    $('#message_submit').on("click", function(e) {
+      e.preventDefault();
+      var input = $('.message').val();
+      $.ajax({
+        url: '/submit',
+        data: {input: input},
+        dataType: 'json',
+        success: function(data){
+          console.log(data);
+        }
+      });
+    });
+  });
+</script>
