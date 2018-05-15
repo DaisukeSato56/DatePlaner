@@ -1,2 +1,26 @@
 @import 'materialize';
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
+.container {
+  margin-top: 30px;
+}
+
+.last {
+  margin-bottom: 10px;
+}
+
+.button {
+  float: left;
+  width: auto;
+  margin-right: 10px; 
+}
+
+.tweet_field {
+  width: 100px;
+}
+
+.clearfix::after{
+  content: "";
+  display: block;
+  clear: both;
+}

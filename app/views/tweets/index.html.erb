@@ -1,12 +1,20 @@
-
 <div class="container">
+  <% @tweets.each do |tweet| %>
+    <div class="divider"></div>
+    <div class="section clearfix">
+      <p class="tweet_field"><%= tweet.body %></p>
+      <%= link_to "削除", tweet_path(tweet), method: :delete,  class: "btn button" %>
+    </div>
+  <% end %>
+  <div class="divider last"></div>
+
   <%= form_for @tweet do |f| %>
     <div class="row">
       <div class="col s12">
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix">textsms</i>
-            <%= f.text_field :body, id: "autocomplete-input", class: "autocomplete" %>
+            <%= f.text_field :body, id: "autocomplete-input", class: "autocomplete", placeholder: "メッセージを入力してください" %>
             <% f.label "Autocomplete", for: "autocomplete-input" %>
           </div>
         </div>
@@ -14,7 +22,6 @@
     </div>
 
     <%= f.submit "Submit", class: "btn waves-effect waves-light", name: "action" %>
-      <!-- <i class="material-icons right">send</i>
-    </button> -->
+
   <% end %>
 </div>
