@@ -19,6 +19,7 @@ gem 'jbuilder', '~> 2.5'
 
 gem "materialize-sass"
 gem 'pry-byebug'
+gem 'geocoder'
 
 group :development, :test do
   gem 'byebug', platform: :mri

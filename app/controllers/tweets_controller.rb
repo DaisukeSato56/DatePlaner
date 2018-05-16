@@ -7,6 +7,9 @@ class TweetsController < ApplicationController
     @tweets = Tweet.all
   end
 
+  def asset
+  end
+
   def create
     # params[:input]の内容をジオコーダーで取得し、緯度経度情報の取得
     # 緯度経度情報を元にgoogleplacesAPIを用いて、周辺の施設を検索
@@ -14,7 +17,7 @@ class TweetsController < ApplicationController
     @tweet = Tweet.new(tweet_params)
     @tweet.save
     respond_to do |format|
-      format.html { redirect_to root_path  }
+      format.html { redirect_to controller: 'tweets', action: 'index', notice: "投稿しました" }
       format.json
     end
   end
@@ -30,6 +33,6 @@ class TweetsController < ApplicationController
     end
 
     def tweet_params
-      params.require(:tweet).permit(:body)
+      params.require(:tweet).permit(:address)
     end
 end

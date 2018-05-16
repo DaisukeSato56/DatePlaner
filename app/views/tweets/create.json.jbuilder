@@ -1,2 +1,2 @@
-json.body  @tweet.body
+json.address  @tweet.address
 json.id @tweet.id

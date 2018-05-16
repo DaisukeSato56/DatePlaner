@@ -3,7 +3,7 @@
     <% @tweets.each do |tweet| %>
       <div class="divider"></div>
       <div class="section clearfix">
-        <p class="tweet_field"><%= tweet.body %></p>
+        <p class="tweet_field"><%= tweet.address %></p>
         <%= link_to "削除", tweet_path(tweet), method: :delete,  class: "btn button" %>
       </div>
     <% end %>
@@ -16,7 +16,7 @@
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix">textsms</i>
-            <%= f.text_field :body, id: "autocomplete-input", class: "autocomplete, message", placeholder: "メッセージを入力してください" %>
+            <%= f.text_field :address, id: "autocomplete-input", class: "autocomplete, message", placeholder: "メッセージを入力してください" %>
             <% f.label "Autocomplete", for: "autocomplete-input" %>
           </div>
         </div>
@@ -34,7 +34,7 @@
       var html = `
                   <div class="divider"></div>
                   <div class="section clearfix">
-                    <p class="tweet_field">${tweet.body}</p>
+                    <p class="tweet_field">${tweet.address}</p>
                     <a data-confirm="削除しますか？" data-method="delete" href="/tweets/${tweet.id}" rel="nofollow" class="btn button">削除</a>
                   </div>
                  `
@@ -53,11 +53,10 @@
         processData: false,
         contentType: false,
         success: function(data){
-          console.log(data);
           var html = buildHTML(data);
           $('.comments').append(html);
           $('.message').val('');
-          console.log(html)
+          location.reload();
         }
       });
     });
