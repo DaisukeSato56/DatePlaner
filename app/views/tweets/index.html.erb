@@ -1,11 +1,13 @@
 <div class="container">
-  <% @tweets.each do |tweet| %>
-    <div class="divider"></div>
-    <div class="section clearfix">
-      <p class="tweet_field"><%= tweet.body %></p>
-      <%= link_to "削除", tweet_path(tweet), method: :delete,  class: "btn button" %>
-    </div>
-  <% end %>
+  <div class="comments">
+    <% @tweets.each do |tweet| %>
+      <div class="divider"></div>
+      <div class="section clearfix">
+        <p class="tweet_field"><%= tweet.body %></p>
+        <%= link_to "削除", tweet_path(tweet), method: :delete,  class: "btn button" %>
+      </div>
+    <% end %>
+  </div>
   <div class="divider last"></div>
 
   <%= form_for @tweet, html: {id: 'item_form'} do |f| %>
@@ -28,15 +30,34 @@
 
 <script type="text/javascript">
   $(function() {
-    $('#message_submit').on("click", function(e) {
+    function buildHTML(tweet) {
+      var html = `
+                  <div class="divider"></div>
+                  <div class="section clearfix">
+                    <p class="tweet_field">${tweet.body}</p>
+                    <a data-confirm="削除しますか？" data-method="delete" href="/tweets/${tweet.id}" rel="nofollow" class="btn button">削除</a>
+                  </div>
+                 `
+      return html
+    }
+    $('#item_form').on("submit", function(e) {
       e.preventDefault();
-      var input = $('.message').val();
+      var formData = new FormData(this);
+      var url = $(this).attr('action');
+      // もしinputが date [地名] のインプットだったら
       $.ajax({
-        url: '/submit',
-        data: {input: input},
+        url: url,
+        type: 'POST',
+        data: formData,
         dataType: 'json',
+        processData: false,
+        contentType: false,
         success: function(data){
           console.log(data);
+          var html = buildHTML(data);
+          $('.comments').append(html);
+          $('.message').val('');
+          console.log(html)
         }
       });
     });
