@@ -22,12 +22,13 @@ class TweetsController < ApplicationController
 
     lat = @tweet.latitude
     lng = @tweet.longitude
+
     rad = 2000
     language = 'ja'
 
     places = [ ["restaurant"], ["aquarium", "park", "museum", "shopping_mall"], ["cafe"] ]
 
-    result_places = []
+    @result_places = []
     places.each do |place|
       types = place[rand(place.length)]
 
@@ -37,17 +38,18 @@ class TweetsController < ApplicationController
       }
 
       obj = JSON.parse(res.body)
-      result_places << obj["results"][rand(obj["results"].length)]["name"]
-    end
 
-    # objのresultsキーの0番目の配列の要素の中のnameキーを取得する
-    # obj["results"][0]["name"]
+      @result_places << obj["results"][rand(obj["results"].length)]["name"]
+    end
 
     respond_to do |format|
       format.html { redirect_to controller: 'tweets', action: 'index' }
       format.json
     end
   end
+
+  # objのresultsキーの0番目の配列の要素の中のnameキーを取得する
+  # obj["results"][0]["name"]
 
   def destroy
     @tweet.destroy

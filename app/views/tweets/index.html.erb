@@ -1,22 +1,12 @@
 <div class="container">
-  <div class="comments">
-    <% @tweets.each do |tweet| %>
-      <div class="divider"></div>
-      <div class="section clearfix">
-        <p class="tweet_field"><%= tweet.address %></p>
-        <%= link_to "削除", tweet_path(tweet), method: :delete,  class: "btn button" %>
-      </div>
-    <% end %>
-  </div>
-  <div class="divider last"></div>
-
   <%= form_for @tweet, html: {id: 'item_form'} do |f| %>
     <div class="row">
       <div class="col s12">
         <div class="row">
+          <h3>デート場所を検索してみよう</h3>
           <div class="input-field col s12">
             <i class="material-icons prefix">textsms</i>
-            <%= f.text_field :address, id: "autocomplete-input", class: "autocomplete, message", placeholder: "メッセージを入力してください" %>
+            <%= f.text_field :address, id: "autocomplete-input", class: "autocomplete, message", placeholder: "デート場所を入力してみて" %>
             <% f.label "Autocomplete", for: "autocomplete-input" %>
           </div>
         </div>
@@ -24,8 +14,20 @@
     </div>
 
     <%= f.submit "Submit", class: "btn waves-effect waves-light", id: "message_submit", name: "action" %>
-
   <% end %>
+
+  <div class="result">
+  </div>
+
+  <!-- <div class="comments">
+    <% @tweets.each do |tweet| %>
+      <div class="section clearfix">
+        <p class="tweet_field"><%= tweet.address %></p>
+        <%= link_to "削除", tweet_path(tweet), method: :delete,  class: "btn button" %>
+      </div>
+      <div class="divider last"></div>
+    <% end %>
+  </div> -->
 </div>
 
 <script type="text/javascript">
@@ -40,11 +42,22 @@
                  `
       return html
     }
+    function buildResult(tweet) {
+      var html2 = `
+                  <div class="result">
+                    <h5>この場所の理想のデートプラン！</h5>
+                    <div class="section clearfix">
+                      <h5 class="date_place">${tweet.place1}<br>→${tweet.place2}<br>→${tweet.place3}</h5>
+                    </div>
+                  </div>
+                 `
+      return html2
+    }
+
     $('#item_form').on("submit", function(e) {
       e.preventDefault();
       var formData = new FormData(this);
       var url = $(this).attr('action');
-      // もしinputが date [地名] のインプットだったら
       $.ajax({
         url: url,
         type: 'POST',
@@ -53,10 +66,19 @@
         processData: false,
         contentType: false,
         success: function(data){
-          var html = buildHTML(data);
-          $('.comments').append(html);
-          $('.message').val('');
-          location.reload();
+          if (data.place1) {
+            var html = buildHTML(data);
+            var html2 = buildResult(data);
+            $('.comments').append(html);
+            $('.result').append(html2);
+            $('.message').val('');
+            // location.reload();
+          } else {
+            var html2 = buildHTML(data);
+            $('.comments').append(html);
+            $('.message').val('');
+            // location.reload();
+          }
         }
       });
     });

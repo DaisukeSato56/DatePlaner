@@ -12,11 +12,16 @@
 .button {
   float: left;
   width: auto;
-  margin-right: 10px; 
+  margin-right: 10px;
 }
 
-.tweet_field {
-  width: 100px;
+.date_place {
+  font-weight: bold;
+  font-style: italic;
+}
+
+.result {
+  margin-top: 20px;
 }
 
 .clearfix::after{
